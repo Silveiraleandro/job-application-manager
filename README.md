@@ -22,6 +22,8 @@ The project serves as a hands-on environment for learning and implementing conta
 **DevOps**
 - Docker
 - Docker Compose
+- Multi-stage Docker builds
+- Nginx reverse proxy
 - Kubernetes (planned)
 - Helm (planned)
 - GitHub Actions (planned)
@@ -45,41 +47,55 @@ job-application-manager/
 └── README.md
 ```
 
+
 ## Running Locally
 
 ### Prerequisites
 
-- Java 17
-- Node.js and npm
 - Docker Desktop
 
-### 1. Start PostgreSQL
+### Run the complete application
 
 From the project root:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-### 2. Start the backend
+Docker Compose starts three services:
 
-From the `backend` directory:
+| Service | Technology | Port |
+|---------|------------|------|
+| Frontend | Angular + Nginx | 4200 |
+| Backend | Java 17 + Spring Boot | 8080 |
+| Database | PostgreSQL 17 | 5432 |
+
+Open http://localhost:4200 to access the application.
+
+### Stop the application
 
 ```bash
-./mvnw spring-boot:run
+docker compose down
 ```
 
-On Windows PowerShell, use `.\mvnw.cmd spring-boot:run`.
+PostgreSQL data is preserved in a named Docker volume.
 
-The API runs at `http://localhost:8080`.
-
-### 3. Start the frontend
-
-From the `frontend` directory:
+### Rebuild after code changes
 
 ```bash
-npm install
-npm start
+docker compose up -d --build
+```
+
+### View container logs
+
+```bash
+docker compose logs -f
+```
+
+### Verify running containers
+
+```bash
+docker compose ps
 ```
 
 Open `http://localhost:4200`.
@@ -89,8 +105,9 @@ Open `http://localhost:4200`.
 - [x] Full-stack application setup
 - [x] REST API and PostgreSQL integration
 - [x] Basic CRUD operations
-- [ ] Containerize backend and frontend
-- [ ] Multi-container Docker Compose deployment
+- [x] Containerize backend and frontend
+- [x] Multi-container Docker Compose deployment
+- [x] PostgreSQL persistence across container restarts
 - [ ] Kubernetes deployment
 - [ ] Helm charts
 - [ ] GitHub Actions CI/CD
