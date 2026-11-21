@@ -100,6 +100,33 @@ docker compose ps
 
 Open `http://localhost:4200`.
 
+
+## Continuous Integration
+
+The project uses GitHub Actions to automatically validate changes
+on pushes to feature branches and pull requests targeting main.
+
+The CI pipeline consists of three jobs:
+
+| Job | Responsibility |
+|-----|----------------|
+| Backend Build and Test | Maven build and automated tests with PostgreSQL |
+| Frontend Build | Dependency installation and Angular production build |
+| Docker Build and Validation | Docker image builds, Compose validation and smoke tests |
+
+The backend and frontend jobs run in parallel.
+The Docker validation job runs after both succeed.
+
+### Branch Protection
+
+The main branch is protected by a GitHub repository ruleset:
+
+- Pull requests are required before merging.
+- All three CI status checks must pass.
+- Feature branches must be up to date before merging.
+- Force pushes and branch deletion are restricted.
+
+
 ## Roadmap
 
 - [x] Full-stack application setup
@@ -108,11 +135,23 @@ Open `http://localhost:4200`.
 - [x] Containerize backend and frontend
 - [x] Multi-container Docker Compose deployment
 - [x] PostgreSQL persistence across container restarts
+- [x] GitHub Actions Continuous Integration
+- [x] Automated Docker smoke tests
+- [x] Branch protection and required CI checks
 - [ ] Kubernetes deployment
 - [ ] Helm charts
-- [ ] GitHub Actions CI/CD
+- [ ] Continuous Deployment (CD)
 - [ ] Monitoring with Prometheus and Grafana
 
 ## Project Status
 
-**
+**Day 3 complete:** Automated Continuous Integration using GitHub Actions,
+including backend builds and tests, frontend production builds,
+Docker image validation, and application smoke tests.
+
+The main branch is protected by a repository ruleset that requires
+successful CI checks before merging pull requests.
+
+**Next milestone:** Kubernetes deployment using a local Kubernetes
+cluster, includes: Deployments, Services, ConfigMaps, Secrets,
+and persistent storage.
