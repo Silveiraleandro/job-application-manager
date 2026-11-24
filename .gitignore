@@ -60,3 +60,6 @@ Thumbs.db
 # Java
 *.class
 *.log
+
+# Kubernetes local secrets
+/infra/k8s/secret.yaml
